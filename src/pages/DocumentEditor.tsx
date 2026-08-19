@@ -87,7 +87,6 @@ const CATEGORIES: ItemCategory[] = [
   'Labour',
   'Other',
 ];
-const UNITS = ['hour', 'day', 'each', 'square foot', 'linear foot', 'lump sum', 'custom'];
 const PAYMENT_METHODS: PaymentMethod[] = [
   'Cash',
   'Cheque',
@@ -233,7 +232,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
             setDueDate(addDaysISO(todayISO(), s?.default_invoice_due_days ?? 14));
           }
         }
-      } catch (e) {
+      } catch {
         toast('Failed to load document', 'error');
       } finally {
         if (!cancelled) setLoading(false);
@@ -385,7 +384,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
           setPayments(d.payments ?? []);
         }
       }
-    } catch (e) {
+    } catch {
       toast('Failed to save document', 'error');
     } finally {
       setSaving(false);
@@ -797,7 +796,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                 setProjectType(e.target.value as ProjectType | '');
                 markDirty();
               }}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
             >
               <option value="">— Select —</option>
               <option value="Residential">Residential</option>
@@ -944,7 +943,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                         <input
                           value={item.description}
                           onChange={(e) => updateItem(i, { description: e.target.value })}
-                          className="w-full rounded-md border border-transparent hover:border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500/40 px-2 py-1.5 text-sm"
+                          className="w-full rounded-md border border-transparent hover:border-gray-200 focus:border-stone-500 focus:ring-1 focus:ring-stone-500/40 px-2 py-1.5 text-sm"
                           placeholder="Item description"
                         />
                       </td>
@@ -952,7 +951,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                         <select
                           value={item.category}
                           onChange={(e) => updateItem(i, { category: e.target.value as ItemCategory })}
-                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
                         >
                           {CATEGORIES.map((c) => (
                             <option key={c} value={c}>
@@ -968,14 +967,14 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                           step="0.01"
                           value={item.quantity}
                           onChange={(e) => updateItem(i, { quantity: parseFloat(e.target.value) || 0 })}
-                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
                         />
                       </td>
                       <td className="px-2 py-1.5">
                         <input
                           value={item.unit}
                           onChange={(e) => updateItem(i, { unit: e.target.value })}
-                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
                         />
                       </td>
                       <td className="px-2 py-1.5">
@@ -985,7 +984,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                           step="0.01"
                           value={fromCents(item.rate_cents)}
                           onChange={(e) => updateItem(i, { rate_cents: toCents(parseFloat(e.target.value) || 0) })}
-                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm text-right focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
                         />
                       </td>
                       <td className="px-2 py-1.5 text-center">
@@ -993,7 +992,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                           type="checkbox"
                           checked={item.taxable}
                           onChange={(e) => updateItem(i, { taxable: e.target.checked })}
-                          className="w-4 h-4 rounded text-orange-600 focus:ring-orange-500"
+                          className="w-4 h-4 rounded text-stone-700 focus:ring-stone-500"
                         />
                       </td>
                       <td className="px-2 py-1.5 text-right text-sm font-semibold text-gray-900">
@@ -1022,7 +1021,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                     <input
                       value={item.description}
                       onChange={(e) => updateItem(i, { description: e.target.value })}
-                      className="flex-1 rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+                      className="flex-1 rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
                       placeholder="Item description"
                     />
                     <button
@@ -1080,7 +1079,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                         type="checkbox"
                         checked={item.taxable}
                         onChange={(e) => updateItem(i, { taxable: e.target.checked })}
-                        className="w-4 h-4 rounded text-orange-600"
+                        className="w-4 h-4 rounded text-stone-700"
                       />
                       Taxable
                     </label>
@@ -1179,7 +1178,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
                   </div>
                   <div className="flex justify-between pt-2 border-t border-gray-200">
                     <span className="font-semibold text-gray-900">Balance Due</span>
-                    <span className={`font-bold ${totals.remainingCents > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+                    <span className={`font-bold ${totals.remainingCents > 0 ? 'text-stone-700' : 'text-green-600'}`}>
                       {formatMoney(totals.remainingCents, settings?.currency)}
                     </span>
                   </div>
@@ -1188,7 +1187,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
               {isQuote && depositCents > 0 && (
                 <div className="flex justify-between pt-2 border-t border-gray-200">
                   <span className="font-semibold text-gray-900">Deposit Required</span>
-                  <span className="font-bold text-orange-600">{formatMoney(depositCents, settings?.currency)}</span>
+                  <span className="font-bold text-stone-700">{formatMoney(depositCents, settings?.currency)}</span>
                 </div>
               )}
             </div>
@@ -1341,7 +1340,7 @@ export function DocumentEditor({ docId, docType, onBack, onOpenDoc }: Props) {
               value={shareText}
               onChange={(e) => setShareText(e.target.value)}
               rows={10}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
             />
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowShare(false)}>
