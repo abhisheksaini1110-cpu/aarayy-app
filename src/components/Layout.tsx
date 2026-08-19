@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import {
   LayoutDashboard,
   FileText,
@@ -7,9 +7,10 @@ import {
   Package,
   Settings,
   LogOut,
-  HardHat,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
+import { fetchSettings } from '@/lib/db';
+import type { BusinessSettings } from '@/lib/types';
 
 export type PageKey =
   | 'dashboard'
@@ -36,17 +37,40 @@ const navItems: { key: PageKey; label: string; icon: typeof LayoutDashboard }[] 
 
 export function Layout({ current, onNavigate, children }: LayoutProps) {
   const { signOut } = useAuth();
+  const [settings, setSettings] = useState<BusinessSettings | null>(null);
+
+  useEffect(() => {
+    const refreshBrand = () => fetchSettings().then(setSettings).catch(() => undefined);
+    refreshBrand();
+    window.addEventListener('aarayy:settings-updated', refreshBrand);
+    return () => window.removeEventListener('aarayy:settings-updated', refreshBrand);
+  }, []);
+
+  const brandName = settings?.business_name?.trim() || 'AARAYY Flooring Inc.';
+
+  const BrandMark = ({ mobile = false }: { mobile?: boolean }) =>
+    settings?.logo_url ? (
+      <img
+        src={settings.logo_url}
+        alt={`${brandName} logo`}
+        className={`${mobile ? 'w-9 h-9' : 'w-10 h-10'} rounded-full object-contain bg-white`}
+      />
+    ) : (
+      <div className={`${mobile ? 'w-9 h-9 text-xs' : 'w-10 h-10 text-sm'} rounded-full border border-stone-400 bg-stone-50 text-stone-700 flex items-center justify-center font-serif tracking-tight`}>
+        AA
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-[#faf7f2] flex">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-60 border-r border-gray-200 bg-white flex-shrink-0">
-        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-gray-100">
-          <div className="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center">
-            <HardHat className="w-5 h-5 text-white" />
+      <aside className="hidden md:flex flex-col w-64 border-r border-gray-200 bg-white flex-shrink-0">
+        <div className="flex items-center gap-3 px-4 h-[72px] border-b border-gray-100">
+          <BrandMark />
+          <div className="min-w-0">
+            <div className="font-serif text-[13px] tracking-[0.08em] text-stone-900 truncate">{brandName}</div>
+            <div className="text-[9px] uppercase tracking-[0.13em] text-stone-500 mt-0.5">Residential &amp; Commercial Renovations</div>
           </div>
-          <span className="font-bold text-gray-900">AARAYY</span>
-          <span className="text-[10px] text-gray-400 font-medium leading-tight">Renovations</span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
           {navItems.map((item) => {
@@ -58,11 +82,11 @@ export function Layout({ current, onNavigate, children }: LayoutProps) {
                 onClick={() => onNavigate(item.key)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? 'bg-orange-50 text-orange-700'
+                    ? 'bg-stone-100 text-stone-800'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${active ? 'text-orange-600' : 'text-gray-400'}`} />
+                <Icon className={`w-5 h-5 ${active ? 'text-stone-700' : 'text-gray-400'}`} />
                 {item.label}
               </button>
             );
@@ -83,11 +107,12 @@ export function Layout({ current, onNavigate, children }: LayoutProps) {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="md:hidden flex items-center justify-between h-14 px-4 bg-white border-b border-gray-200 sticky top-0 z-30">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center">
-              <HardHat className="w-4.5 h-4.5 text-white" />
+          <div className="flex items-center gap-2.5 min-w-0">
+            <BrandMark mobile />
+            <div className="min-w-0">
+              <div className="font-serif text-xs tracking-[0.08em] text-stone-900 truncate">{brandName}</div>
+              <div className="text-[8px] uppercase tracking-[0.11em] text-stone-500">Renovations</div>
             </div>
-            <span className="font-bold text-gray-900 text-sm">AARAYY</span>
           </div>
           <button
             onClick={() => signOut()}
@@ -111,7 +136,7 @@ export function Layout({ current, onNavigate, children }: LayoutProps) {
                   key={item.key}
                   onClick={() => onNavigate(item.key)}
                   className={`flex flex-col items-center justify-center py-2.5 gap-0.5 ${
-                    active ? 'text-orange-600' : 'text-gray-400'
+                    active ? 'text-stone-700' : 'text-gray-400'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
