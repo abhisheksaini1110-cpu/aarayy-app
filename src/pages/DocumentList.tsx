@@ -5,7 +5,6 @@ import {
   ArrowRight,
   FileText,
   Receipt,
-  ArrowUpDown,
 } from 'lucide-react';
 import { fetchDocuments } from '@/lib/db';
 import type { DocumentRow, DocType } from '@/lib/types';
@@ -13,7 +12,6 @@ import {
   Card,
   Button,
   Select,
-  Input,
   LoadingScreen,
   EmptyState,
   Badge,
@@ -123,7 +121,7 @@ export function DocumentList({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by number, client, project, address..."
-            className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+            className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
           />
         </div>
         <Select

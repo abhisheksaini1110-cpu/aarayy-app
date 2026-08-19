@@ -132,6 +132,8 @@ export interface DocumentRow {
   tax_rate: number;
   tax_cents: number;
   total_cents: number;
+  /** Calculated for dashboard/list views when payments have been loaded. */
+  balance_due_cents?: number;
   deposit_cents: number;
   notes: string;
   exclusions: string;

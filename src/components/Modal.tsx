@@ -97,7 +97,7 @@ export function ConfirmDialog({
             className={`px-4 py-2 rounded-lg text-sm font-medium text-white ${
               danger
                 ? 'bg-red-600 hover:bg-red-700'
-                : 'bg-orange-600 hover:bg-orange-700'
+                : 'bg-stone-700 hover:bg-stone-800'
             }`}
           >
             {confirmLabel}
@@ -107,3 +107,4 @@ export function ConfirmDialog({
     </div>
   );
 }
+
