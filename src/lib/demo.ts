@@ -22,7 +22,7 @@ export async function loadDemoData(): Promise<void> {
       quote_prefix: 'Q',
       invoice_prefix: 'INV',
       default_terms:
-        '50% deposit required before work begins. Balance due within 14 days of project completion. All work guaranteed for 1 year against defects in workmanship.',
+        'This quotation is valid for 30 days unless otherwise stated. Work will be scheduled after written acceptance and receipt of any required deposit. The quoted price includes only the labour, materials and services specifically described. Changes to the scope must be approved and may affect price and schedule. The Owner shall provide safe access to the work area and, at no charge to AARAYY Flooring Inc., working electricity and suitable outlets required for tools and equipment. Hidden damage, moisture, mould, asbestos, structural issues, unsafe wiring, plumbing issues or other unforeseen conditions may require additional work and charges. Deposits, progress payments and final payments are due according to the quotation or invoice. Final payment is due upon completion unless otherwise agreed in writing.',
       default_exclusions:
         'Excludes permits, hazardous material abatement, asbestos removal, and work outside the agreed scope. Additional work will be quoted separately.',
       payment_instructions:
