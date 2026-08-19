@@ -106,7 +106,7 @@ export function ClientsPage({ onOpenDoc }: { onOpenDoc: (doc: DocumentRow) => vo
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name, email, phone, or contact..."
-          className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+          className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
         />
       </div>
 
@@ -444,7 +444,7 @@ function ClientDetail({
           </Card>
           <Card className="p-4 text-center">
             <p className="text-xs text-gray-500 mb-1">Outstanding</p>
-            <p className="text-lg font-bold text-orange-600">{formatMoney(stats.outstanding)}</p>
+            <p className="text-lg font-bold text-stone-700">{formatMoney(stats.outstanding)}</p>
           </Card>
         </div>
       )}
@@ -464,7 +464,7 @@ function ClientDetail({
                     className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                       doc.doc_type === 'quote'
                         ? 'bg-blue-50 text-blue-600'
-                        : 'bg-orange-50 text-orange-600'
+                        : 'bg-stone-100 text-stone-700'
                     }`}
                   >
                     {doc.doc_type === 'quote' ? (
@@ -496,3 +496,4 @@ function ClientDetail({
     </div>
   );
 }
+
