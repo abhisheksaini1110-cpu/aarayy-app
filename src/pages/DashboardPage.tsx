@@ -6,11 +6,10 @@ import {
   AlertTriangle,
   Plus,
   TrendingUp,
-  TrendingDown,
   ArrowRight,
 } from 'lucide-react';
 import { fetchDashboardData } from '@/lib/db';
-import { formatMoney, formatDate, isOverdue } from '@/lib/utils';
+import { formatMoney, formatDate } from '@/lib/utils';
 import { Card, LoadingScreen, EmptyState, Button } from '@/components/ui';
 import type { DocumentRow } from '@/lib/types';
 
@@ -118,7 +117,7 @@ export function DashboardPage({
                       className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                         doc.doc_type === 'quote'
                           ? 'bg-blue-50 text-blue-600'
-                          : 'bg-orange-50 text-orange-600'
+                          : 'bg-stone-100 text-stone-700'
                       }`}
                     >
                       {doc.doc_type === 'quote' ? (
@@ -158,7 +157,7 @@ export function DashboardPage({
               <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
                 <div className="w-full flex items-end justify-center gap-1 h-32">
                   <div
-                    className="w-1/2 max-w-[20px] bg-orange-400 rounded-t transition-all"
+                    className="w-1/2 max-w-[20px] bg-stone-400 rounded-t transition-all"
                     style={{ height: `${(m.invoiced / maxMonth) * 100}%` }}
                     title={`Invoiced: ${formatMoney(m.invoiced)}`}
                   />
@@ -174,7 +173,7 @@ export function DashboardPage({
           </div>
           <div className="flex items-center justify-center gap-4 mt-4 text-xs">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-orange-400" />
+              <div className="w-3 h-3 rounded bg-stone-400" />
               <span className="text-gray-600">Invoiced</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -206,7 +205,7 @@ export function DashboardPage({
                   </p>
                 </div>
                 <span className="text-sm font-semibold text-red-600">
-                  {formatMoney(inv.total_cents)}
+                  {formatMoney(inv.balance_due_cents ?? inv.total_cents)}
                 </span>
               </button>
             ))}
@@ -229,7 +228,7 @@ function StatCard({
   color: 'orange' | 'green' | 'blue' | 'red';
 }) {
   const colors = {
-    orange: 'bg-orange-50 text-orange-600',
+    orange: 'bg-stone-100 text-stone-700',
     green: 'bg-green-50 text-green-600',
     blue: 'bg-blue-50 text-blue-600',
     red: 'bg-red-50 text-red-600',
