@@ -8,12 +8,12 @@ export async function loadDemoData(): Promise<void> {
   if (!settings) {
     settings = await upsertSettings({
       business_name: 'AARAYY Flooring Inc.',
-      owner_name: 'Aarav Patel',
-      phone: '(416) 555-0199',
-      email: 'info@aarayyflooring.ca',
-      website: 'www.aarayyflooring.ca',
-      address: '78 Industrial Parkway, Toronto, ON M4B 1S3',
-      tax_reg_number: '847291003 RT0001',
+      owner_name: 'Demo Owner',
+      phone: '(000) 000-0000',
+      email: 'demo@example.com',
+      website: 'example.com',
+      address: 'Demo Business Address, Ontario, Canada',
+      tax_reg_number: 'DEMO-TAX-ID',
       currency: 'CAD',
       tax_label: 'HST',
       default_tax_rate: 13,
@@ -22,11 +22,11 @@ export async function loadDemoData(): Promise<void> {
       quote_prefix: 'Q',
       invoice_prefix: 'INV',
       default_terms:
-        '50% deposit required before work begins. Balance due within 14 days of project completion. All work guaranteed for 1 year against defects in workmanship.',
+        'This quotation is valid for 30 days unless otherwise stated. Work will be scheduled after written acceptance and receipt of any required deposit. The quoted price includes only the labour, materials and services specifically described. Changes to the scope must be approved and may affect price and schedule. The Owner shall provide safe access to the work area and, at no charge to AARAYY Flooring Inc., working electricity and suitable outlets required for tools and equipment. Hidden damage, moisture, mould, asbestos, structural issues, unsafe wiring, plumbing issues or other unforeseen conditions may require additional work and charges. Deposits, progress payments and final payments are due according to the quotation or invoice. Final payment is due upon completion unless otherwise agreed in writing.',
       default_exclusions:
         'Excludes permits, hazardous material abatement, asbestos removal, and work outside the agreed scope. Additional work will be quoted separately.',
       payment_instructions:
-        'E-transfer to info@aarayyflooring.ca. Cheques payable to AARAYY Flooring Inc.',
+        'E-transfer to demo@example.com. Cheques payable to AARAYY Flooring Inc.',
       footer_message:
         'AARAYY Flooring Inc. — Residential & Commercial Renovations. Thank you for your business.',
     });
@@ -36,7 +36,7 @@ export async function loadDemoData(): Promise<void> {
   const { data: existingClient } = await supabase
     .from('clients')
     .select('id')
-    .eq('email', 'sarah@northgatehomes.ca')
+    .eq('email', 'client@example.com')
     .maybeSingle();
 
   let clientId: string;
@@ -46,12 +46,12 @@ export async function loadDemoData(): Promise<void> {
     const { data: client, error } = await supabase
       .from('clients')
       .insert({
-        name: 'Northgate Homes Inc.',
-        contact_person: 'Sarah Chen',
-        phone: '(416) 555-0287',
-        email: 'sarah@northgatehomes.ca',
-        billing_address: '1200 Bayview Avenue, Toronto, ON M4S 2B6',
-        job_site_address: '44 Maple Ridge Drive, Markham, ON L3S 1K2',
+        name: 'Demo Client Inc.',
+        contact_person: 'Demo Contact',
+        phone: '(000) 000-0000',
+        email: 'client@example.com',
+        billing_address: 'Demo Billing Address, Ontario, Canada',
+        job_site_address: 'Demo Job-Site Address, Ontario, Canada',
         notes: 'Prefers email communication. Residential renovation projects.',
       })
       .select()
@@ -152,14 +152,14 @@ export async function loadDemoData(): Promise<void> {
         doc_type: 'quote' as DocType,
         number: quoteNumber,
         client_id: clientId,
-        client_name: 'Northgate Homes Inc.',
-        client_contact: 'Sarah Chen',
-        client_phone: '(416) 555-0287',
-        client_email: 'sarah@northgatehomes.ca',
+        client_name: 'Demo Client Inc.',
+        client_contact: 'Demo Contact',
+        client_phone: '(000) 000-0000',
+        client_email: 'client@example.com',
         project_name: 'Main Floor Full Renovation',
         project_type: 'Residential',
-        billing_address: '1200 Bayview Avenue, Toronto, ON M4S 2B6',
-        job_site_address: '44 Maple Ridge Drive, Markham, ON L3S 1K2',
+        billing_address: 'Demo Billing Address, Ontario, Canada',
+        job_site_address: 'Demo Job-Site Address, Ontario, Canada',
         issue_date: issueDate,
         valid_until: validUntil,
         status: 'sent',
@@ -176,7 +176,7 @@ export async function loadDemoData(): Promise<void> {
         exclusions: settings.default_exclusions || '',
         terms: settings.default_terms || '',
         internal_notes:
-          'Sarah mentioned they may add the kitchen renovation later — follow up after acceptance.',
+          'Demo contact may add the kitchen renovation later — follow up after acceptance.',
       })
       .select()
       .single();
@@ -241,14 +241,14 @@ export async function loadDemoData(): Promise<void> {
         doc_type: 'invoice' as DocType,
         number: invNumber,
         client_id: clientId,
-        client_name: 'Northgate Homes Inc.',
-        client_contact: 'Sarah Chen',
-        client_phone: '(416) 555-0287',
-        client_email: 'sarah@northgatehomes.ca',
+        client_name: 'Demo Client Inc.',
+        client_contact: 'Demo Contact',
+        client_phone: '(000) 000-0000',
+        client_email: 'client@example.com',
         project_name: 'Bathroom & Living Area Renovation — Phase 1',
         project_type: 'Residential',
-        billing_address: '1200 Bayview Avenue, Toronto, ON M4S 2B6',
-        job_site_address: '44 Maple Ridge Drive, Markham, ON L3S 1K2',
+        billing_address: 'Demo Billing Address, Ontario, Canada',
+        job_site_address: 'Demo Job-Site Address, Ontario, Canada',
         issue_date: issueDate,
         valid_until: null,
         due_date: dueDate,
