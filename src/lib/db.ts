@@ -11,6 +11,7 @@ import type {
   ProjectType,
 } from './types';
 import { calcLineTotal, calcTotals, toCents } from './utils';
+import { COMMON_CONSTRUCTION_SERVICES } from './commonServices';
 
 // ===== Settings =====
 export async function fetchSettings(): Promise<BusinessSettings | null> {
@@ -146,6 +147,22 @@ export async function upsertCatalogueItem(
 export async function deleteCatalogueItem(id: string): Promise<void> {
   const { error } = await supabase.from('catalogue_items').delete().eq('id', id);
   if (error) throw error;
+}
+
+export async function loadCommonServices(): Promise<number> {
+  const existing = await fetchCatalogue();
+  const descriptions = new Set(
+    existing.map((item) => item.description.trim().toLocaleLowerCase()),
+  );
+  const missing = COMMON_CONSTRUCTION_SERVICES.filter(
+    (item) => !descriptions.has(item.description.trim().toLocaleLowerCase()),
+  );
+
+  if (missing.length === 0) return 0;
+
+  const { error } = await supabase.from('catalogue_items').insert(missing);
+  if (error) throw error;
+  return missing.length;
 }
 
 // ===== Documents =====
@@ -503,7 +520,6 @@ export async function fetchDashboardData() {
   const qu = (quotes ?? []) as DocumentRow[];
   const pays = (payments ?? []) as { amount_cents: number; payment_date: string; invoice_id: string }[];
 
-  const paidInvoices = inv.filter((i) => i.status === 'paid');
   const totalPaid = pays.reduce((s, p) => s + p.amount_cents, 0);
   const outstanding = inv.reduce((s, i) => {
     const invPaid = pays
@@ -519,14 +535,15 @@ export async function fetchDashboardData() {
     .reduce((s, q) => s + q.total_cents, 0);
 
   const now = new Date();
-  const overdueInvoices = inv.filter((i) => {
-    if (i.status === 'paid' || i.status === 'void' || i.status === 'draft') return false;
-    if (!i.due_date) return false;
+  const overdueInvoices = inv.flatMap((i) => {
+    if (i.status === 'paid' || i.status === 'void' || i.status === 'draft') return [];
+    if (!i.due_date) return [];
     const invPaid = pays
       .filter((p) => p.invoice_id === i.id)
       .reduce((a, p) => a + p.amount_cents, 0);
-    if (invPaid >= i.total_cents) return false;
-    return new Date(i.due_date) < now;
+    const balanceDue = Math.max(0, i.total_cents - invPaid);
+    if (balanceDue === 0 || new Date(i.due_date) >= now) return [];
+    return [{ ...i, balance_due_cents: balanceDue }];
   });
 
   // monthly summary: last 6 months

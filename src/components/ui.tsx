@@ -8,7 +8,7 @@ export function Spinner({ className = '' }: { className?: string }) {
 export function LoadingScreen({ message = 'Loading...' }: { message?: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-3">
-      <Spinner className="w-8 h-8 text-orange-600" />
+      <Spinner className="w-8 h-8 text-stone-700" />
       <p className="text-sm text-gray-500">{message}</p>
     </div>
   );
@@ -27,7 +27,7 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-      <div className="w-14 h-14 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 mb-4">
+      <div className="w-14 h-14 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 mb-4">
         {icon}
       </div>
       <h3 className="text-base font-semibold text-gray-900 mb-1">{title}</h3>
@@ -49,7 +49,7 @@ export function Button({
   size?: 'sm' | 'md' | 'lg';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const variants = {
-    primary: 'bg-orange-600 text-white hover:bg-orange-700 shadow-sm',
+    primary: 'bg-stone-700 text-white hover:bg-stone-800 shadow-sm',
     secondary: 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm',
     outline: 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50',
     ghost: 'text-gray-700 hover:bg-gray-100',
@@ -81,7 +81,7 @@ export function Badge({
     gray: 'bg-gray-100 text-gray-700',
     green: 'bg-green-100 text-green-700',
     blue: 'bg-blue-100 text-blue-700',
-    orange: 'bg-orange-100 text-orange-700',
+    orange: 'bg-stone-200 text-stone-800',
     red: 'bg-red-100 text-red-700',
     yellow: 'bg-yellow-100 text-yellow-700',
     purple: 'bg-purple-100 text-purple-700',
@@ -157,7 +157,7 @@ export function Input({
         </label>
       )}
       <input
-        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-colors ${
+        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500 transition-colors ${
           error ? 'border-red-400' : 'border-gray-300'
         }`}
         {...props}
@@ -181,7 +181,7 @@ export function Textarea({
         </label>
       )}
       <textarea
-        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-colors resize-y ${
+        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500 transition-colors resize-y ${
           error ? 'border-red-400' : 'border-gray-300'
         }`}
         {...props}
@@ -206,7 +206,7 @@ export function Select({
         </label>
       )}
       <select
-        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-colors ${
+        className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500 transition-colors ${
           error ? 'border-red-400' : 'border-gray-300'
         }`}
         {...props}
@@ -217,3 +217,4 @@ export function Select({
     </div>
   );
 }
+

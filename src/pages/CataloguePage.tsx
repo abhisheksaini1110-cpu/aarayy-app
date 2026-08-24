@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Package, Plus, Search, Pencil, Trash2 } from 'lucide-react';
+import { Package, Plus, Search, Pencil, Trash2, ListPlus, Loader2 } from 'lucide-react';
 import {
   fetchCatalogue,
   upsertCatalogueItem,
   deleteCatalogueItem,
+  loadCommonServices,
 } from '@/lib/db';
 import type { CatalogueItem, ItemCategory } from '@/lib/types';
 import {
@@ -79,6 +80,7 @@ export function CataloguePage() {
   const [editing, setEditing] = useState<CatalogueItem | null>(null);
   const [creating, setCreating] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<CatalogueItem | null>(null);
+  const [loadingServices, setLoadingServices] = useState(false);
   const { toast } = useToast();
 
   async function load() {
@@ -97,6 +99,23 @@ export function CataloguePage() {
     load();
   }, []);
 
+  async function handleLoadCommonServices() {
+    setLoadingServices(true);
+    try {
+      const added = await loadCommonServices();
+      toast(
+        added > 0
+          ? `${added} common construction services added`
+          : 'All common services are already in your catalogue',
+      );
+      await load();
+    } catch {
+      toast('Failed to add common services', 'error');
+    } finally {
+      setLoadingServices(false);
+    }
+  }
+
   const filtered = items.filter((it) => {
     const q = search.toLowerCase();
     const matchSearch = !q || it.description.toLowerCase().includes(q);
@@ -113,9 +132,19 @@ export function CataloguePage() {
             Reusable catalogue for your quotes and invoices
           </p>
         </div>
-        <Button onClick={() => setCreating(true)}>
-          <Plus className="w-4 h-4" /> Add Item
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={handleLoadCommonServices} disabled={loadingServices}>
+            {loadingServices ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <ListPlus className="w-4 h-4" />
+            )}
+            Add Common Services
+          </Button>
+          <Button onClick={() => setCreating(true)}>
+            <Plus className="w-4 h-4" /> Add Item
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
@@ -125,7 +154,7 @@ export function CataloguePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search items..."
-            className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500"
+            className="w-full rounded-lg border border-gray-300 pl-10 pr-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-stone-500/40 focus:border-stone-500"
           />
         </div>
         <Select
@@ -155,9 +184,19 @@ export function CataloguePage() {
           }
           action={
             !search && filterCat === 'all' ? (
-              <Button onClick={() => setCreating(true)}>
-                <Plus className="w-4 h-4" /> Add Item
-              </Button>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Button variant="outline" onClick={handleLoadCommonServices} disabled={loadingServices}>
+                  {loadingServices ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <ListPlus className="w-4 h-4" />
+                  )}
+                  Add Common Services
+                </Button>
+                <Button onClick={() => setCreating(true)}>
+                  <Plus className="w-4 h-4" /> Add Item
+                </Button>
+              </div>
             ) : undefined
           }
         />
@@ -395,7 +434,7 @@ function ItemEditor({
                 onClick={() => setForm({ ...form, taxable: true })}
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
                   form.taxable
-                    ? 'bg-orange-600 text-white'
+                    ? 'bg-stone-700 text-white'
                     : 'bg-gray-100 text-gray-600'
                 }`}
               >
@@ -406,7 +445,7 @@ function ItemEditor({
                 onClick={() => setForm({ ...form, taxable: false })}
                 className={`px-4 py-2 rounded-lg text-sm font-medium ${
                   !form.taxable
-                    ? 'bg-orange-600 text-white'
+                    ? 'bg-stone-700 text-white'
                     : 'bg-gray-100 text-gray-600'
                 }`}
               >
