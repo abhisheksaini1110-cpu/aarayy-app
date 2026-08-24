@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Settings, Upload, Trash2, Save, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { Settings, Upload, Trash2, Save, Loader2, Sparkles } from 'lucide-react';
 import { fetchSettings, upsertSettings } from '@/lib/db';
 import { supabase } from '@/lib/supabase';
 import type { BusinessSettings } from '@/lib/types';
@@ -16,7 +16,6 @@ import { useToast } from '@/components/Toast';
 import { loadDemoData } from '@/lib/demo';
 
 export function SettingsPage() {
-  const [settings, setSettings] = useState<BusinessSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -29,7 +28,6 @@ export function SettingsPage() {
   useEffect(() => {
     fetchSettings()
       .then((s) => {
-        setSettings(s);
         setForm(s ?? {});
       })
       .catch(() => toast('Failed to load settings', 'error'))
@@ -39,8 +37,8 @@ export function SettingsPage() {
   async function handleSave() {
     setSaving(true);
     try {
-      const saved = await upsertSettings(form);
-      setSettings(saved);
+      await upsertSettings(form);
+      window.dispatchEvent(new Event('aarayy:settings-updated'));
       toast('Settings saved');
     } catch {
       toast('Failed to save settings', 'error');
@@ -80,7 +78,7 @@ export function SettingsPage() {
       await loadDemoData();
       toast('Demo data loaded');
       setDemoConfirm(false);
-    } catch (e) {
+    } catch {
       toast('Failed to load demo data', 'error');
     } finally {
       setDemoLoading(false);
@@ -290,10 +288,10 @@ export function SettingsPage() {
       </Card>
 
       {/* Demo data */}
-      <Card className="p-5 border-orange-200 bg-orange-50/30">
+      <Card className="p-5 border-stone-300 bg-stone-100/30">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-5 h-5 text-orange-600" />
+          <div className="w-10 h-10 rounded-lg bg-stone-200 flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-stone-700" />
           </div>
           <div className="flex-1">
             <h2 className="text-base font-semibold text-gray-900 mb-1">Load Demo Data</h2>
