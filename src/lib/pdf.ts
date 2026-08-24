@@ -1,5 +1,5 @@
 import type { BusinessSettings, DocumentWithItems } from './types';
-import { formatMoney, formatDate, fromCents } from './utils';
+import { formatMoney, formatDate } from './utils';
 
 function escapeHtml(s: string): string {
   return (s ?? '')
@@ -269,7 +269,6 @@ export function downloadPDF(doc: DocumentWithItems, settings: BusinessSettings, 
 
 export function buildShareMessage(doc: DocumentWithItems, settings: BusinessSettings): string {
   const isQuote = doc.doc_type === 'quote';
-  const title = isQuote ? 'quote' : 'invoice';
   const amount = formatMoney(doc.total_cents, settings.currency);
   const biz = settings.business_name || 'our company';
 
